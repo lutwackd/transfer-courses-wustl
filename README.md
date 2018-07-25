@@ -1,6 +1,6 @@
 # transfer-courses-wustl
 A redesign of Washington University in St. Louis's delivery of transfer-course information<br>
-Using PostgresSQL & Python 
+Using PostgreSQL & Python 
 
 ### Summary
 * Used Python scripts and SQL to clean up a large unmaintained data set of transfer courses
