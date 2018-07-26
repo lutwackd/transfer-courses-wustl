@@ -9,5 +9,6 @@ __This allows students to now find courses near them as opposed to looking throu
 * clone this repository
 * `cd transfer-courses-wustl `
 * `pip install pyscopg2`
-* `python find_schools.py`
+* To find schools near you: `python find_schools.py`
+* To find courses near you: `python find_courses.py`
 * follow instructions in script
