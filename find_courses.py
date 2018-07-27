@@ -32,8 +32,6 @@ def main():
     results = cursor.fetchall()
 
 
-    # print (results)
-
     if not results:
         print("\nNo courses were found that match your input.")
     else:
