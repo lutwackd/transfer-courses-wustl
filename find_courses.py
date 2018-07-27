@@ -12,7 +12,6 @@ def main():
     cursor = conn.cursor()
     
     is_running = True
-    is_valid = False
 
     while is_running:
         print("\n\n--------WASHU TRANSFER COURSE FINDER--------")
@@ -20,7 +19,7 @@ def main():
         #retrieve zip, department ID, and course number from user
         zip = raw_input("\n\nTo find colleges offering courses near you, enter your zip code: ")
         cursor.execute("select lat, long from zip_coordinates_map where zip = (%s)", (zip,))
-        coordinates = cursor.fetchone();
+        coordinates = cursor.fetchone()
         user_lat = coordinates[0]
         user_long = coordinates[1]
 
@@ -36,20 +35,18 @@ def main():
 
         if not results:
             print("\nNo courses were found that match your input.")
-            try_again= raw_input("\nWould you like to try again? Enter Y to try again or any other key to leave. ")
+            try_again = raw_input("\nWould you like to try again? Enter Y to try again or any other key to leave. ")
             if try_again == "Y":
                 is_running = True
             else:
                 is_running = False
         else:
+            col_width = max(len(item) for row in results for item in row) + 5  # padding
             i = 0
             print("\n")
-            
-            col_width = max(len(item) for row in results for item in row) + 5  # padding
-            
             for row in results:
                 print str(i)+ ". " + "".join(item.ljust(col_width) for item in row)
-                i=i+1
+                i = i + 1
             is_running = False
 
 
