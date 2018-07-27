@@ -11,30 +11,48 @@ def main():
     # get a connection & cursor
     conn = psycopg2.connect(conn_string)
     cursor = conn.cursor()
+
+    is_running = True
     
-    #retrieve zip code from user and associated lat/long
-    print("\n\n--------WASHU TRANSFER COURSE FINDER--------")
-    zip = raw_input("\n\nTo find colleges offering courses near you, enter your zip code: ")
-    cursor.execute("select lat, long from zip_coordinates_map where zip = (%s)", (zip,))
-    coordinates = cursor.fetchone();
-    user_lat = coordinates[0]
-    user_long = coordinates[1]
-    
-    #get closest 20 schools
-    cursor.execute("select name_oth from schools_oth order by geodistance(lat,long, (%s), (%s)) asc limit 20", (user_lat, user_long,))
-    results = cursor.fetchall()
-    
-    results = list(sum(results, ())) #formatting tuple to not show commas
-    
-    i = 0
-    print("\n")
-    for school in results:
-        print (str(i) +  '. ' + school)
-        i = i + 1
-    
-    #prompt for school that user wants more info about + open page
-    open_link = raw_input("\nWhat school would you like to see courses for? Enter the number: ")
-    wb.open('http://registrar.seas.wustl.edu/EVALS/evals.asp?school=' + (results[int(open_link)]), new =2)
+    while is_running:
+        print("\n\n--------WASHU TRANSFER COURSE FINDER--------")
+
+        #retrieve zip code from user and associated lat/long
+        zip = raw_input("\n\nTo find colleges offering courses near you, enter your zip code: ")
+        cursor.execute("select lat, long from zip_coordinates_map where zip = (%s)", (zip,))
+        coordinates = cursor.fetchone()
+        if coordinates == None:
+            print("\nNo zip codes were found that match your input.")
+            try_zip_again = raw_input("\nWould you like to try again? Enter Y to try again or any other key to leave. ")
+            print(try_zip_again)
+            if try_zip_again == "Y":
+                continue
+            else:
+                is_running = False
+                break      
+        else:
+            user_lat = coordinates[0]
+            user_long = coordinates[1]
+        
+        #get closest 20 schools
+        cursor.execute("select name_oth from schools_oth order by geodistance(lat,long, (%s), (%s)) asc limit 20", (user_lat, user_long,))
+        results = cursor.fetchall()
+        
+        results = list(sum(results, ())) #formatting tuple to not show commas
+        
+        i = 0
+        print("\n")
+        for school in results:
+            print (str(i) +  '. ' + school)
+            i = i + 1
+        
+        #prompt for school that user wants more info about + open page
+        open_link = raw_input("\nWhat school would you like to see courses for? Enter the number or enter Q to exit: ")
+        if open_link == "Q":
+            is_running = False
+        else:
+            wb.open('http://registrar.seas.wustl.edu/EVALS/evals.asp?school=' + (results[int(open_link)]), new =2)
+            is_running = False
 
 
 if __name__ == "__main__":

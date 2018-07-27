@@ -20,8 +20,19 @@ def main():
         zip = raw_input("\n\nTo find colleges offering courses near you, enter your zip code: ")
         cursor.execute("select lat, long from zip_coordinates_map where zip = (%s)", (zip,))
         coordinates = cursor.fetchone()
-        user_lat = coordinates[0]
-        user_long = coordinates[1]
+        if coordinates == None:
+            print("\nNo zip codes were found that match your input.")
+            try_zip_again = raw_input("\nWould you like to try again? Enter Y to try again or any other key to leave. ")
+            print(try_zip_again)
+            if try_zip_again == "Y":
+                continue
+            else:
+                is_running = False
+                break      
+        else:
+            user_lat = coordinates[0]
+            user_long = coordinates[1]
+            
 
         dept_code_wu = raw_input("\n\nEnter the WashU Department Code for the course you would like to receive credit for: ")
         course_number_wu = raw_input("\n\nEnter the WashU Course Number for the course you would like to receive credit for: ")
@@ -36,9 +47,7 @@ def main():
         if not results:
             print("\nNo courses were found that match your input.")
             try_again = raw_input("\nWould you like to try again? Enter Y to try again or any other key to leave. ")
-            if try_again == "Y":
-                is_running = True
-            else:
+            if try_again != "Y":
                 is_running = False
         else:
             col_width = max(len(item) for row in results for item in row) + 5  # padding
