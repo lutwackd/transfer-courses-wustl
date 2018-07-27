@@ -28,16 +28,25 @@ def main():
     cursor.execute('''select so.name_oth, co.dept_code_oth, co.course_num_oth from courses_oth co join schools_oth so on so.id =
                     co.school_id_oth where co.course_num_wu = (%s) and co.dept_code_wu = (%s) order by geodistance(lat, long, (%s)
                     ,(%s)) asc limit 10''', (course_number_wu, dept_code_wu, user_lat, user_long,))
+    
     results = cursor.fetchall()
 
-    i = 0
-    print("\n")
-    
-    col_width = max(len(item) for row in results for item in row) + 5  # padding
-    
-    for row in results:
-        print str(i)+ ". " + "".join(item.ljust(col_width) for item in row)
-        i=i+1
+
+    # print (results)
+
+    if not results:
+        print("\nNo courses were found that match your input.")
+    else:
+        i = 0
+        print("\n")
+        
+        col_width = max(len(item) for row in results for item in row) + 5  # padding
+        
+        for row in results:
+            print str(i)+ ". " + "".join(item.ljust(col_width) for item in row)
+            i=i+1
+   
+
 
 if __name__ == "__main__":
     main() 
