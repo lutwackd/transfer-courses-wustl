@@ -1,12 +1,15 @@
 import psycopg2
 import sys, os
+sys.path.insert(0, './src/')
 import json
 import webbrowser as wb
+import methods
 
 def main():
 
-    #connection string for a readonly user
+    #consts
     conn_string = "host='ec2-18-222-149-129.us-east-2.compute.amazonaws.com' dbname='transfer_courses' user='guest' password='guest'"
+    wu_url = "http://registrar.seas.wustl.edu/EVALS/evals.asp?school="
     
     # get a connection & cursor
     conn = psycopg2.connect(conn_string)
@@ -19,12 +22,13 @@ def main():
 
         #retrieve zip code from user and associated lat/long
         zip = raw_input("\n\nTo find colleges offering courses near you, enter your zip code: ")
-        cursor.execute("select lat, long from zip_coordinates_map where zip = (%s)", (zip,))
-        coordinates = cursor.fetchone()
+        
+        coordinates = methods.get_coordinates(cursor, zip)
+        
         if coordinates == None:
             print("\nNo zip codes were found that match your input.")
+            
             try_zip_again = raw_input("\nWould you like to try again? Enter Y to try again or any other key to leave. ")
-            print(try_zip_again)
             if try_zip_again == "Y":
                 continue
             else:
@@ -51,9 +55,8 @@ def main():
         if open_link == "Q":
             is_running = False
         else:
-            wb.open('http://registrar.seas.wustl.edu/EVALS/evals.asp?school=' + (results[int(open_link)]), new =2)
+            wb.open(wu_url + (results[int(open_link)]), new =2)
             is_running = False
-
 
 if __name__ == "__main__":
     main() 
