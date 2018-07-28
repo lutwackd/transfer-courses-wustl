@@ -19,7 +19,7 @@ def show_departments(cursor): #show the list of all department codes
     for row in results:
         print "".join(item.ljust(col_width) for item in row)
         
-    return raw_input("\n\nEnter your department code:")
+    return raw_input("\n\nEnter the WashU department code: ")
 
 def get_courses(cursor, course_number_wu, dept_code_wu, user_lat, user_long, limit): #get the closest courses
     cursor.execute('''

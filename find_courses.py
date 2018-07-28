@@ -43,7 +43,7 @@ def main():
             
         #get department code from user
         dept_code_wu = raw_input("\n\nEnter the WashU Department Code for the course you would like to receive"
-                                "credit for. \nOr, enter 'L' to see a list of deparments:  " )
+                                "credit for. \nOr, enter 'L' to see a list of deparments: " )
         
         #show all department codes (if requested)
         if dept_code_wu == 'L':
