@@ -17,6 +17,7 @@ def main():
     conn = psycopg2.connect(conn_string)
     cursor = conn.cursor()
     
+    # boolean to try again
     is_running = True
 
     while is_running:
@@ -48,14 +49,12 @@ def main():
         if dept_code_wu == 'L':
             dept_code_wu = methods.show_departments(cursor)
         
-        
         #get course code from user
         course_number_wu = raw_input("\n\nEnter the WashU Course Number for the course you would like to"
                                     "\nreceive credit for: ")
 
         #get closest 20 course matches
         results = methods.get_courses(cursor, course_number_wu, dept_code_wu, user_lat, user_long, limit)
-        
         
         #print out results if not empy
         if results:

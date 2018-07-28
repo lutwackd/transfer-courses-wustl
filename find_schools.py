@@ -39,10 +39,10 @@ def main():
             user_long = coordinates[1]
         
         #get closest 20 schools
-        cursor.execute("select name_oth from schools_oth order by geodistance(lat,long, (%s), (%s)) asc limit 20", (user_lat, user_long,))
-        results = cursor.fetchall()
+        results = methods.get_schools(cursor, user_lat, user_long)
         
-        results = list(sum(results, ())) #formatting tuple to not show commas
+        #formatting tuple to not show commas
+        results = list(sum(results, ())) 
         
         i = 0
         print("\n")
@@ -55,7 +55,7 @@ def main():
         if open_link == "Q":
             is_running = False
         else:
-            wb.open(wu_url + (results[int(open_link)]), new =2)
+            wb.open(wu_url + (results[int(open_link)]), new = 2)
             is_running = False
 
 if __name__ == "__main__":

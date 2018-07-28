@@ -1,5 +1,8 @@
 import psycopg2
 
+#consts
+padding = 5
+
 def show_departments(cursor): #show the list of all department codes
     cursor.execute('''    
         SELECT
@@ -10,7 +13,7 @@ def show_departments(cursor): #show the list of all department codes
     ''')
         
     results = cursor.fetchall()
-    col_width = max(len(item) for row in results for item in row) + 5  # padding
+    col_width = max(len(item) for row in results for item in row) + padding  # padding
     
     #show departments
     for row in results:
@@ -18,7 +21,7 @@ def show_departments(cursor): #show the list of all department codes
         
     return raw_input("\n\nEnter your department code:")
 
-def get_courses(cursor, course_number_wu, dept_code_wu, user_lat, user_long, limit): #get the 20 closest courses
+def get_courses(cursor, course_number_wu, dept_code_wu, user_lat, user_long, limit): #get the closest courses
     cursor.execute('''
         SELECT
             so.name_oth,
@@ -42,7 +45,17 @@ def get_coordinates(cursor, zip):
             zcm.lat,
             zcm.long
         FROM zip_coordinates_map zcm
-        WHERE zip = (%s)'''
-    , (zip,))
+        WHERE zip = (%s)
+    ''', (zip,))
     
     return cursor.fetchone()
+
+def get_schools(cursor, user_lat, user_long):
+    cursor.execute('''
+        SELECT name_oth
+        FROM schools_oth 
+        ORDER by geodistance(lat,long, (%s), (%s)) ASC
+        LIMIT 20'''
+    , (user_lat, user_long,))
+    
+    return cursor.fetchall()
