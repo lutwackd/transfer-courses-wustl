@@ -10,7 +10,7 @@ Collaborators: Ali Axelrod, Davis Lutwack, Kristen Wilder
 ### Getting started
 * clone this repository
 * `cd transfer-courses-wustl `
-* `pip install pyscopg2`
+* `pip install psycopg2`
 * To find schools near you: `python find_schools.py`
 * To find courses near you: `python find_courses.py`
 * follow instructions in script
