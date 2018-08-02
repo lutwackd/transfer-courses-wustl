@@ -1,15 +1,15 @@
 import psycopg2
 import sys, os
-sys.path.insert(0, './src/')
+sys.path.insert(0, SRC)
 import json
 import webbrowser as wb
 import methods
-
+import consts
 def main():
 
     #consts
-    conn_string = "host='ec2-18-222-149-129.us-east-2.compute.amazonaws.com' dbname='transfer_courses' user='guest' password='guest'"
-    wu_url = "http://registrar.seas.wustl.edu/EVALS/evals.asp?school="
+    conn_string = CONN_STRING
+    wu_url = URL_STRING
     
     # get a connection & cursor
     conn = psycopg2.connect(conn_string)
@@ -18,17 +18,17 @@ def main():
     is_running = True
     
     while is_running:
-        print("\n\n--------WASHU TRANSFER COURSE FINDER--------")
+        print(consts.TITLE_MESSAGE)
 
         #retrieve zip code from user and associated lat/long
-        zip = raw_input("\n\nTo find colleges offering courses near you, enter your zip code: ")
+        zip = raw_input(consts.ZIP_MESSAGE)
         
         coordinates = methods.get_coordinates(cursor, zip)
         
         if coordinates == None:
-            print("\nNo zip codes were found that match your input.")
+            print(NO_ZIP_MATCH_MESSAGE)
             
-            try_zip_again = raw_input("\nWould you like to try again? Enter Y to try again or any other key to leave. ")
+            try_zip_again = raw_input(TRY_AGAIN_MESSAGE)
             if try_zip_again == "Y":
                 continue
             else:
@@ -51,14 +51,14 @@ def main():
             i = i + 1
         
         #prompt for school that user wants more info about + open page
-        open_link = raw_input("\nWhat school would you like to see courses for? Enter the number or enter Q to exit: ")
+        open_link = raw_input(PICK_SCHOOL_MESSAGE)
         if open_link == "Q":
             is_running = False
         else:
             wb.open(wu_url + (results[int(open_link)]), new = 2)
             is_running = False
 
-if __name__ == "__main__":
+if __name__ == MAIN:
     main() 
     
     

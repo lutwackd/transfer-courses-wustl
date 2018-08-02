@@ -1,15 +1,15 @@
 
 import psycopg2
 import sys, os
-sys.path.insert(0, './src/')
+sys.path.insert(0, SRC)
 import json
 import webbrowser as wb
 import methods
-
+import consts
 def main():
     
     #consts
-    conn_string = "host='ec2-18-222-149-129.us-east-2.compute.amazonaws.com' dbname='transfer_courses' user='guest' password='guest'"
+    conn_string = CONN_STRING
     padding = 5
     limit = 10
     
@@ -21,17 +21,17 @@ def main():
     is_running = True
 
     while is_running:
-        print("\n\n--------WASHU TRANSFER COURSE FINDER--------")
+        print(consts.TITLE_MESSAGE)
 
         #get zip code from user
-        zip = raw_input("\n\nTo find colleges offering courses near you, enter your zip code: ")
+        zip = raw_input(consts.ZIP_MESSAGE)
     
         #get coordinates from zip code
         coordinates = methods.get_coordinates(cursor, zip)
        
         if coordinates == None:
-            print("\nNo zip codes were found that match your input.")
-            try_zip_again = raw_input("\nWould you like to try again? Enter Y to try again or any other key to leave. ")
+            print(NO_ZIP_MATCH_MESSAGE)
+            try_zip_again = raw_input(TRY_AGAIN_MESSAGE)
             if try_zip_again == "Y":
                 continue
             else:
@@ -42,16 +42,14 @@ def main():
             user_long = coordinates[1]
             
         #get department code from user
-        dept_code_wu = raw_input("\n\nEnter the WashU Department Code for the course you would like to receive"
-                                "credit for. \nOr, enter 'L' to see a list of deparments:  " )
+        dept_code_wu = raw_input(DEPT_CODE_MESSAGE )
         
         #show all department codes (if requested)
         if dept_code_wu == 'L':
             dept_code_wu = methods.show_departments(cursor)
         
         #get course code from user
-        course_number_wu = raw_input("\n\nEnter the WashU Course Number for the course you would like to"
-                                    "\nreceive credit for: ")
+        course_number_wu = raw_input(COURSE_NUMBER_MESSAGE)
 
         #get closest 20 course matches
         results = methods.get_courses(cursor, course_number_wu, dept_code_wu, user_lat, user_long, limit)
@@ -66,13 +64,13 @@ def main():
                 i = i + 1
             is_running = False
         else:
-            print("\nNo courses were found that match your input.")
-            try_again = raw_input("\nWould you like to try again? Enter Y to try again or any other key to leave. ")
+            print(NO_COURSES_MESSAGE)
+            try_again = raw_input(TRY_AGAIN_MESSAGE)
             if try_again != "Y":
                 is_running = False
 
 
-if __name__ == "__main__":
+if __name__ == MAIN:
     main() 
     
     
