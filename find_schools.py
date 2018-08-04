@@ -4,13 +4,9 @@ sys.path.insert(0, SRC)
 import json
 import webbrowser as wb
 import methods
-import consts
+import constants
 def main():
 
-    #consts
-    conn_string = CONN_STRING
-    wu_url = URL_STRING
-    
     # get a connection & cursor
     conn = psycopg2.connect(conn_string)
     cursor = conn.cursor()
@@ -18,18 +14,18 @@ def main():
     is_running = True
     
     while is_running:
-        print(consts.TITLE_MESSAGE)
+        print(constants.TITLE_MESSAGE)
 
         #retrieve zip code from user and associated lat/long
-        zip = raw_input(consts.ZIP_MESSAGE)
+        zip = raw_input(constants.ZIP_MESSAGE)
         
         coordinates = methods.get_coordinates(cursor, zip)
         
         if coordinates == None:
-            print(NO_ZIP_MATCH_MESSAGE)
+            print(constants.NO_ZIP_MATCH_MESSAGE)
             
-            try_zip_again = raw_input(TRY_AGAIN_MESSAGE)
-            if try_zip_again == "Y":
+            try_zip_again = raw_input(constants.TRY_AGAIN_MESSAGE)
+            if try_zip_again == constants.TRY_AGAIN_NO_COURSES_KEY:
                 continue
             else:
                 is_running = False
@@ -51,14 +47,14 @@ def main():
             i = i + 1
         
         #prompt for school that user wants more info about + open page
-        open_link = raw_input(PICK_SCHOOL_MESSAGE)
-        if open_link == "Q":
+        open_link = raw_input(constants.PICK_SCHOOL_MESSAGE)
+        if open_link == constants.OPEN_LINK_KEY:
             is_running = False
         else:
             wb.open(wu_url + (results[int(open_link)]), new = 2)
             is_running = False
 
-if __name__ == MAIN:
+if __name__ == "__main__":
     main() 
     
     

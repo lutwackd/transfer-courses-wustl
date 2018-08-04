@@ -5,13 +5,9 @@ sys.path.insert(0, SRC)
 import json
 import webbrowser as wb
 import methods
-import consts
+import constants
 def main():
     
-    #consts
-    conn_string = CONN_STRING
-    padding = 5
-    limit = 10
     
     # get a connection & cursor
     conn = psycopg2.connect(conn_string)
@@ -21,18 +17,18 @@ def main():
     is_running = True
 
     while is_running:
-        print(consts.TITLE_MESSAGE)
+        print(constants.TITLE_MESSAGE)
 
         #get zip code from user
-        zip = raw_input(consts.ZIP_MESSAGE)
+        zip = raw_input(constants.ZIP_MESSAGE)
     
         #get coordinates from zip code
         coordinates = methods.get_coordinates(cursor, zip)
        
         if coordinates == None:
-            print(NO_ZIP_MATCH_MESSAGE)
-            try_zip_again = raw_input(TRY_AGAIN_MESSAGE)
-            if try_zip_again == "Y":
+            print(constants.NO_ZIP_MATCH_MESSAGE)
+            try_zip_again = raw_input(constants.TRY_AGAIN_MESSAGE)
+            if try_zip_again == constants.TRY_AGAIN_NO_COURSES_KEY:
                 continue
             else:
                 is_running = False
@@ -42,14 +38,14 @@ def main():
             user_long = coordinates[1]
             
         #get department code from user
-        dept_code_wu = raw_input(DEPT_CODE_MESSAGE )
+        dept_code_wu = raw_input(constants.DEPT_CODE_MESSAGE )
         
         #show all department codes (if requested)
-        if dept_code_wu == 'L':
+        if dept_code_wu == : constants.DEPT_CODE_WU_KEY
             dept_code_wu = methods.show_departments(cursor)
         
         #get course code from user
-        course_number_wu = raw_input(COURSE_NUMBER_MESSAGE)
+        course_number_wu = raw_input(constants.COURSE_NUMBER_MESSAGE)
 
         #get closest 20 course matches
         results = methods.get_courses(cursor, course_number_wu, dept_code_wu, user_lat, user_long, limit)
@@ -64,13 +60,13 @@ def main():
                 i = i + 1
             is_running = False
         else:
-            print(NO_COURSES_MESSAGE)
-            try_again = raw_input(TRY_AGAIN_MESSAGE)
-            if try_again != "Y":
+            print(constants.NO_COURSES_MESSAGE)
+            try_again = raw_input(constants.TRY_AGAIN_MESSAGE)
+            if try_again != constants.TRY_AGAIN_NO_COURSES_KEY:
                 is_running = False
 
 
-if __name__ == MAIN:
+if __name__ == "__main__":
     main() 
     
     

@@ -1,1 +1,0 @@
-TITLE_MESSAGE = '\n\n--------WASHU TRANSFER COURSE FINDER--------'
