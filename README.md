@@ -7,6 +7,13 @@ Collaborators: Ali Axelrod, Davis Lutwack, Kristen Wilder
 * Originally, when looking for a summer course, students had to search through hundreds of unorganized schools and thousands of unorganized courses that would be accepted for credit at WashU
 * With this project, students can now easily find schools and course offerings near them
 
+
+### Video Demo
+
+![find_courses demo](https://media.giphy.com/media/4N1IofMzh50LYBH9Y1/giphy.gif)
+
+
+
 ### Summary
 * Data cleanup + enrichment using Python scripting and SQL techniques: 
   * Identify and remove duplicates, fix inconsistent naming and mappings
@@ -18,6 +25,7 @@ Collaborators: Ali Axelrod, Davis Lutwack, Kristen Wilder
   * Retrieves closest course offerings to a user's location for a specific wustl course
   * Displays a list of all department codes on request and reprompts on incorrect entry 
   
+ 
 ### Getting started
 * clone this repository
 * `cd transfer-courses-wustl `
